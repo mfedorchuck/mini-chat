@@ -1,10 +1,9 @@
-from twisted.internet import reactor
-from twisted.internet.protocol import ClientFactory
-from twisted.protocols.basic import LineOnlyReceiver
-
 import sys
 from PyQt5 import QtWidgets
-from src.design import window
+from gui import design
+
+from twisted.internet.protocol import ClientFactory
+from twisted.protocols.basic import LineOnlyReceiver
 
 
 class Client(LineOnlyReceiver):
@@ -13,7 +12,7 @@ class Client(LineOnlyReceiver):
     def connectionMade(self):
         self.factory.window.protocol = self
 
-    def lineReceived(self, line):
+    def lineReceived(self, line: bytes):
         message = line.decode()
         self.factory.window.plainTextEdit.appendPlainText(message)
 
@@ -26,7 +25,7 @@ class Connector(ClientFactory):
         self.window = app_window
 
 
-class ChatWindow(QtWidgets.QMainWindow, window.Ui_MainWindow):
+class ChatWindow(QtWidgets.QMainWindow, design.Ui_MainWindow):
     protocol: Client
     reactor = None
 
@@ -45,18 +44,20 @@ class ChatWindow(QtWidgets.QMainWindow, window.Ui_MainWindow):
         message = self.lineEdit.text()
 
         self.protocol.sendLine(message.encode())
-        self.lineEdit.setText("")
+        self.lineEdit.setText('')
+
 
 app = QtWidgets.QApplication(sys.argv)
 
 import qt5reactor
 
-window = ChatWindow
+window = ChatWindow()
 window.show()
 
 qt5reactor.install()
 
 from twisted.internet import reactor
+
 reactor.connectTCP(
     "localhost",
     7410,

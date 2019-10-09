@@ -10,6 +10,9 @@ class Handler(LineOnlyReceiver):
     def connectionLost(self, reason=connectionDone):
         self.factory.clients.remove(self)
         print("Disconnected")
+        for user in self.factory.clients:
+            if user is not self:
+                user.sendLine(f"User: {self.login} leave chat".encode())
 
     def connectionMade(self):
         self.login = None
@@ -31,12 +34,13 @@ class Handler(LineOnlyReceiver):
                 login = message.replace("login:", "")
                 self.login = login
                 print(f"New user: {login}")
-                self.sendLine("Welcome!!!".encode())
+                self.sendLine(f"Welcome {login}!".encode())
+                for user in self.factory.clients:
+                    if user is not self:
+                        user.sendLine(f"New user: {login} joined chat".encode())
 
             else:
                 self.sendLine("Login setup failed 🙁".encode())
-
-            print(f"New login: {message}")
 
 
 class Server(ServerFactory):

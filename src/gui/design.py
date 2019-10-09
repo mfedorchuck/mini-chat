@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'window.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.1
-#
-# WARNING! All changes made in this file will be lost!
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -22,7 +13,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.verticalLayout.addWidget(self.plainTextEdit)
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setText("message")
+        self.lineEdit.setText("login:")
         self.lineEdit.setObjectName("lineEdit")
         self.verticalLayout.addWidget(self.lineEdit)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
@@ -36,4 +27,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.plainTextEdit.setPlaceholderText(
+            _translate("MainWindow", "connection to server"))
+        self.lineEdit.setPlaceholderText(
+            _translate("MainWindow", "type your message"))
         self.pushButton.setText(_translate("MainWindow", "send"))
