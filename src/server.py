@@ -12,6 +12,7 @@ class Handler(LineOnlyReceiver):
         print("Disconnected")
 
     def connectionMade(self):
+        self.login = None
         self.factory.clients.append(self)
         print("Connected")
 
